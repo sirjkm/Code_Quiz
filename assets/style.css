@@ -1,0 +1,11 @@
+body {
+    background-color: blue;
+    color: white;
+}
+
+.main {
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+    text-align: center;
+}
