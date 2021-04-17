@@ -4,15 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./assets/style.css">
+    <script defer src="./assets/script.js"></script>
     <title>Coding Quiz Challenge</title>
 </head>
 <body>
-    <div class="main">
-        <h1>Awesome, Totally Serious Code Quiz</h1>
-        <h2 id="test_status"></h2>
-        <div id="test"></div>
+    <div class="container">
+        <div class="hide" id="question-box">
+            <div id="qustion">Question</div>
+            <div class="btn-grid" id="answerbtn">
+                <button class="btn">Answer 1</button>
+                <button class="btn">Answer 2</button>
+                <button class="btn">Answer 3</button>
+                <button class="btn">Answer 4</button>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="start-btn btn" id="startbtn">Start</button>
+            <button class="next-btn btn hide" id="nextbtn">Next</button>
+        </div>
     </div>
-    <script src="./assets/script.js"></script>
 </body>
 
 </html>
