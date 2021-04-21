@@ -1,75 +1,116 @@
-var startButton = document.getElementById("startbtn");
-var questionContainerElem = document.getElementById("question-box");
-var questionElem = document.getElementById("question")
-var answerButtonElem = document.getElementById("answerbtn")
+const startButton = document.getElementById("start-btn");
+const nextButton = document.getElementById("next-btn");
+const questionContainerElement = document.getElementById("question-container");
+const questionElement = document.getElementById("question");
+const answerButtonsElement = document.getElementById("answer-buttons");
 
-startButton.addEventListener("click", startGame)
+let shuffledQuestions, currentQuestionIndex;
 
-function startGame () {
-    startButton.classList.add("hide")
-    shuffleQuestion = question.sort(() => Math.random() - .5)
-    currentQuestionIndex = 0
-    questionContainerElem.classList.remove("hide")
-    nextQuestion()
+startButton.addEventListener("click", startGame);
+nextButton.addEventListener("click", () => {
+  currentQuestionIndex++;
+  setNextQuestion();
+});
+
+function startGame() {
+  startButton.classList.add("hide");
+  shuffledQuestions = questions.sort(() => Math.random() - 0.5);
+  currentQuestionIndex = 0;
+  questionContainerElement.classList.remove("hide");
+  setNextQuestion();
 }
 
-function nextQuestion () {
-    showQuestion(shuffleQuestion[currentQuestionIndex])
+function setNextQuestion() {
+  resetState();
+  showQuestion(shuffledQuestions[currentQuestionIndex]);
 }
 
 function showQuestion(question) {
-    questionElem.innerText = question.question
-    question.answer.forEach( answer => {
-        const button = document.createElement("button")
-        button.innerText = answer.text
-        button.classList.add("btn")
-        if (answer.correct) {
-            button.dataset.correct = answer.correct
-        }
-        button.addEventListener('click', selectAnswer)
-        answerButtonElem.appendChild("button")
-    })
-}
-
-function selectAnswer () {
-
-}
-
-var questions = [
-    {
-        question: "What does HTML stand for?",
-        answers: [
-            { text: "Hot Tacos Make Life", correct: false },
-            { text: "Hypertext Markup Language", correct: true },
-            { text: "Have the money, Lance!", correct: false },
-            { text: "Hypertext Makeup Language", correct: false }
-        ]
-    },
-    {
-        question: "How much maths do you know?",
-        answers: [
-            { text: "A lot!", correct: false },
-            { text: "I can hold my own with my iPhone close by", correct: false },
-            { text: "Who is maths?", correct: false },
-            { text: "Math is life", correct: true }
-        ]
-    },
-    {
-        question: "Mac or PC?",
-        answers: [
-            { text: "Mac", correct: true },
-            { text: "PC", correct: false },
-            { text: "The Stone Tablets of Moses", correct: false },
-            { text: "Abacus & a Whiteclaw", correct: false }
-        ]
-    },
-    {
-        question: "Fixing mistakes in a program is called?",
-        answers: [
-            { text: "Debugging", correct: true },
-            { text: "Looping", correct: false },
-            { text: "Sequencing", correct: false },
-            { text: "Dancing with Death", correct: false },
-        ]
+  questionElement.innerText = question.question;
+  question.answers.forEach((answer) => {
+    const button = document.createElement("button");
+    button.innerText = answer.text;
+    button.classList.add("btn");
+    if (answer.correct) {
+      button.dataset.correct = answer.correct;
     }
-    ];
+    button.addEventListener("click", selectAnswer);
+    answerButtonsElement.appendChild(button);
+  });
+}
+
+function resetState() {
+  clearStatusClass(document.body);
+  nextButton.classList.add("hide");
+  while (answerButtonsElement.firstChild) {
+    answerButtonsElement.removeChild(answerButtonsElement.firstChild);
+  }
+}
+
+function selectAnswer(e) {
+  const selectedButton = e.target;
+  const correct = selectedButton.dataset.correct;
+  setStatusClass(document.body, correct);
+  Array.from(answerButtonsElement.children).forEach((button) => {
+    setStatusClass(button, button.dataset.correct);
+  });
+  if (shuffledQuestions.length > currentQuestionIndex + 1) {
+    nextButton.classList.remove("hide");
+  } else {
+    startButton.innerText = "Restart";
+    startButton.classList.remove("hide");
+  }
+}
+
+function setStatusClass(element, correct) {
+  clearStatusClass(element);
+  if (correct) {
+    element.classList.add("correct");
+  } else {
+    element.classList.add("wrong");
+  }
+}
+
+function clearStatusClass(element) {
+  element.classList.remove("correct");
+  element.classList.remove("wrong");
+}
+
+const questions = [
+  {
+    question: "What does HTML stand for?",
+    answers: [
+      { text: "Hot Tacos Make Life", correct: false },
+      { text: "Hypertext Markup Language", correct: true },
+      { text: "Have the Money, Lance!", correct: false },
+      { text: "Hoopertext Makeup Language", correct: false },
+    ],
+  },
+  {
+    question: "How much math do you know?",
+    answers: [
+      { text: "A lot!", correct: false },
+      { text: "I can hold my own with my iPhone", correct: false },
+      { text: "Who is Math?", correct: false },
+      { text: "Math is life!", correct: true },
+    ],
+  },
+  {
+    question: "Mac or PC?",
+    answers: [
+      { text: "Mac", correct: true },
+      { text: "PC", correct: false },
+      { text: "The Stone Tablets of Moses", correct: false },
+      { text: "Abacus & a Whiteclaw", correct: false },
+    ],
+  },
+  {
+    question: "Correcting mistakes in programming is called?",
+    answers: [
+      { text: "Debugging", correct: true },
+      { text: "Looping", correct: false },
+      { text: "Sequencing", correct: false },
+      { text: "Dancing with the Devil", correct: false },
+    ],
+  },
+];
